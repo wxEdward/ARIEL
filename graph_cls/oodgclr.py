@@ -190,7 +190,7 @@ if __name__ == '__main__':
     n_test_data = float(len(test_dataset))
 
     dataloader = train_loader
-    dataloader_eval = val_loader
+    dataloader_eval = test_loader
 
     # dataloader = DataLoader(dataset, batch_size=batch_size)
     # dataloader_eval = DataLoader(dataset_eval, batch_size=batch_size)
