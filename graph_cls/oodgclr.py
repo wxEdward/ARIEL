@@ -172,7 +172,7 @@ if __name__ == '__main__':
     except:
         dataset_num_features = 1
     '''
-    global_b = '0.333'  # Set bias degree here
+    global_b = '0.5'  # Set bias degree here
     data_dir = 'data/'
     num_classes = 3
     # batch_size = 32
