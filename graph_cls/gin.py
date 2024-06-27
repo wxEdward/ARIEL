@@ -69,7 +69,7 @@ class Encoder(torch.nn.Module):
         with torch.no_grad():
             for data in loader:
 
-                data = data[0]
+                # data = data[0]
                 data.to(device)
                 x, edge_index, batch = data.x, edge2adj(data.x, data.edge_index), data.batch
                 if x is None:

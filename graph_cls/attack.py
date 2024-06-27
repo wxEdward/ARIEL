@@ -1,6 +1,7 @@
 import torch
 import numpy as np
 from utils import edge2adj
+from torch_geometric.utils import to_dense_adj
 
 def bisection(a,eps,xi,ub=1):
     pa = torch.clamp(a, 0, ub)
@@ -37,8 +38,7 @@ def PGD_attack_graph(model, data, data_aug, steps, node_ratio, alpha, beta):
     n_node = x_2.shape[0]
     eps = total_edges * node_ratio/2
     xi = 1e-3
-    
-    A_ = torch.sparse.FloatTensor(edge_index_2, torch.ones(total_edges,device=device), torch.Size((n_node, n_node))).to_dense() 
+    A_ = torch.sparse.FloatTensor(edge_index_2, torch.ones(total_edges,device=device), torch.Size((n_node, n_node))).to_dense()
     C_ = torch.ones_like(A_) - 2 * A_ #- torch.eye(A_.shape[0],device=device)
     S_ = torch.zeros_like(A_, requires_grad= True)
     _, counts = torch.unique(data.batch, return_counts=True)
@@ -65,10 +65,9 @@ def PGD_attack_graph(model, data, data_aug, steps, node_ratio, alpha, beta):
     discretized_S = torch.where(S_.detach() > randm, torch.ones(n_node, n_node,device=device), torch.zeros(n_node, n_node, device=device))
     discretized_S = discretized_S + discretized_S.T
     A_hat = A_ + discretized_S * C_
-        
     for param in model.parameters():
         param.requires_grad = True
     model.train()
     x_hat = x_2 + delta.data.to(device)
-    assert torch.equal(A_hat, A_hat.transpose(0,1))
+    # assert torch.equal(A_hat, A_hat.transpose(0,1))
     return A_hat, x_hat

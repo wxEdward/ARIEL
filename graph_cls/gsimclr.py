@@ -203,7 +203,6 @@ if __name__ == '__main__':
             data, data_aug = data
             optimizer.zero_grad()
 
-            
             node_num, _ = data.x.size()
             data = data.to(device)
             x = model(data.x, edge2adj(data.x, data.edge_index), data.batch, data.num_graphs)
@@ -216,8 +215,6 @@ if __name__ == '__main__':
 
                 node_num_aug = len(idx_not_missing)
                 data_aug.x = data_aug.x[idx_not_missing]
-
-                
 
                 data_aug.batch = data.batch[idx_not_missing]
                 idx_dict = {idx_not_missing[n]:n for n in range(node_num_aug)}
